@@ -129,28 +129,6 @@
 
 
 
-session_start();
-
-if(!isset($_SESSION['PageMembre']))
-{
-    header("location:./connexionReussi"); // redirection
-    exit; // arrêt du script
-}
-//La session est ouverte on peut afficher la page
-
-//=============================================================================
-//                          Affichage de la page
-//=============================================================================
-?>
-
-
-
-
-
-
-
-
-
 ?>
 
 
