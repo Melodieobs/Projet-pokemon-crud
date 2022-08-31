@@ -66,11 +66,14 @@
                     /* Verify if there's any error so we can hash the password for the query */
                     if (empty($errPassword)) {
                         $hashedPassword =hash('sha512', htmlspecialchars($password) );
-                        
+
+                        //J'ai mis ca la car pour moi a chaque foi que l'utilisateur insert un mauvais mot
+                        //de passe la sessions s'arretera.
+                        $_SESSION['errors'] = $errPassword;
+                        header('Location:connection.php');
+
                     }
                 }
-
-                
             }
 
             
@@ -121,6 +124,31 @@
 
     
     }
+
+
+
+
+
+session_start();
+
+if(!isset($_SESSION['PageMembre']))
+{
+    header("location:./connexionReussi"); // redirection
+    exit; // arrêt du script
+}
+//La session est ouverte on peut afficher la page
+
+//=============================================================================
+//                          Affichage de la page
+//=============================================================================
+?>
+
+
+
+
+
+
+
 
 
 ?>
