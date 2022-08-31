@@ -7,10 +7,7 @@
     $paterne = '/^[A-Za-z1-2\s&]+$/';
     $paterne2 = '/^[0-9]+$/';
     $tabval = [];
-    $err = "veuillez remplir le champs";
-    $errtab =  [1 => "La valeur du titre n'est pas bonne.",
-                2 => "La valeur du support n'est pas bonne.",
-                3 => "La date saisie n'est pas bonne."];
+
     //$remplaceGame_Name= str_ireplace( "é","e",$pkmn_game_name);
 
     if($connexion){
@@ -28,13 +25,15 @@
             
             foreach($_POST as $fields => $value){
                 array_push($tabval, $value);
+
+                var_dump($tabval);                
                 if($fields === "generation"){
                     $value = trim(ucfirst($value));
                     if(empty($value)){
-                        echo $err;
+                        echo $errGen = "Le champs génération n'est pas remplis";
                     }
-                    elseif(!preg_match("$paterne2", $value)){
-                        echo "erreur il n'y a que 8 génération";
+                    elseif(preg_match("$paterne2", $value)){
+                        echo $errGen = "erreur il n'y a que 8 génération";
                     }
                     else{
                         $generation = $value;
@@ -42,10 +41,10 @@
                 }
                 if($fields === "titre"){
                     if(empty($value)){
-                        echo $err;
+                        echo $errTitre = "Le champs titre n'as pas était remplis";
                     }
                     elseif(!preg_match("$paterne", $value)){
-                        echo $errtab[1];
+                        echo $errTitre = "La titre saisie n'est pas bonne.";
                         var_dump(!preg_match("$paterne", $value));
                     }
                     else{
@@ -54,10 +53,10 @@
                 }
                 if($fields === "supportsortie"){
                     if(empty($value)){
-                        echo $err;
+                        echo $errSuppSortie = "Le champ date de sorti n'as pas était remplis";
                     }
                     elseif(!preg_match("$paterne", $value)){
-                        echo $errtab[2];
+                        echo $errSuppSortie = "La valeur du support n'est pas bonne.";
                         var_dump(!preg_match("$paterne", $value));
                     }
                     else{
@@ -66,31 +65,17 @@
                 }
                 if($fields === "ddesortie"){
                     if($value > date("Y-m-d")){
-                        echo $errtab[3];
+                        echo $errDate = "La date saisie n'est pas bonne" ;
                     }
                     else{
                         $date = $value;
                     }
                 }
             }
-            if(){
-                $execResult = $connexion->query("UPDATE pokemon_games SET pkmn_game_name = '$value', pkmn_generation ='$value' , pkmn_support = '$value', pkmn_release_date ='$value' WHERE pkmn_id = '$pkmnId'");            
+            if($date && $supp && $titre && $generation){
+                $execResult = $connexion->query("UPDATE pokemon_games SET pkmn_game_name = '$titre', pkmn_generation ='$generation' , pkmn_support = '$supp', pkmn_release_date ='$date' WHERE pkmn_id = '$pkmnId'");            
         }}
     }
-        
-/*     var_dump( date("m.d.Y"));
- */        // else{
-                // $pkmnId = $_POST["pkmn_id"];
-                // $newName = $_POST["titre"];
-                // $newGen = $_POST["generation"];
-                // $newReDate = $_POST["ddesortie"];
-                // $newSupp = $_POST["supportsortie"];
-                // $newIm = $_POST["image"];
-
-                // $execResult = $connexion->query("UPDATE pokemon_games SET pkmn_game_name = '$newName', pkmn_generation ='$newGen' , pkmn_support = '$newSupp', pkmn_release_date ='$newReDate' WHERE pkmn_id = '$pkmnId'");
-                // var_dump($execResult);
-      //  }
-   
 
 ?>
 
