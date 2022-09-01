@@ -16,13 +16,17 @@
     if ($connexion) {
         
     
-        
+        var_dump($connexion);
 
         if (isset($_POST["connection"])) {
 
-            $stmt=$connexion->prepare('SELECT user_email, user_password FROM users WHERE user_email LIKE ?');
+            /* var_dump($_POST);
 
-        
+            var_dump($_POST["connection"]); */
+
+            $stmt=$connexion->prepare('SELECT * FROM users WHERE user_email = ?');
+
+            /* var_dump($stmt); */
             foreach ($_POST as $fields => $values){
         
                 
@@ -36,6 +40,9 @@
                     elseif (!filter_var($mail, FILTER_VALIDATE_EMAIL))  {
                         $errMail = "Votre adresse email n'est pas conforme.";
                         
+                    }
+                    else{
+                        $stmt->bindParam('1', $mail, PDO::PARAM_STR);
                     }
                     
                     
@@ -69,49 +76,59 @@
                         
                     }
                 }
-
+                /* var_dump($errMail);
+                var_dump($errPassword); */
                 
             }
 
             
 
-            if (empty($errMail)) {
-                $stmt->bindParam('1', $mail, PDO::PARAM_STR);
-            }
+            
+            
 
 
             if (empty($errMail) && empty($errPassword)) {
-                $stmt->execute();
-                $stmt->store_result();
+                
+                $result=$stmt->execute();
+                var_dump($result);
+
+                $result=($stmt->fetchAll(PDO::FETCH_ASSOC));
+
+                
+
+                var_dump($result);
+               
             }
 
-            var_dump($stmt);
+            var_dump($result);
 
-            if ($stmt->num_rows == 1) {
-                $stmt->bind_result($id ,$usernameDB, $usermailDB, $passwordDB);
+            if (($result)) {
+                if ($hashedPassword === $result['user_password']) {
+                    session_start();
+    
+                    $_SESSION["id"] = $result["user_id"];
+                    $_SESSION["username"] = $result["user_name"];
+                    $_SESSION["email"] = $result["user_email"];
+                    $_SESSION["loggedin"]= true;
+    
+                    /* header("Location: ./connexionReussi"); */
+                    echo " conenxion réussi";
+                }
+                else{
+                    $errLogin = "L'identifiant ou le mot de passe n'est pas correct";
+                }
+                var_dump($result);
+                /* var_dump($_SESSION); */
 
-                $stmt->fetchAll(PDO::FETCH_ASSOC);
-            }
-            else {
-                $errLogin = "L'identifiant ou le mot de passe n'est pas correct";
-            }
-
-            if ($hashedPassword === $passwordDB) {
-                session_start();
-
-                $_SESSION["id"] = $id;
-                $_SESSION["username"] = $usernameDB;
-                $_SESSION["email"] = $usermailDB;
-                $_SESSION["loggedin"]= true;
-
-                header("Location: ./connexionReussi");
+                
             }
             else{
-                $errLogin = "L'identifiant ou le mot de passe n'est pas correct";
+                $errLogin= "Erreur de connexion";
             }
 
+            
 
-            $stmt->close();
+            /* $stmt->close(); */
 
         }
 
@@ -140,14 +157,14 @@
 
     <h1>Se connecter</h1>
 
-    <form action="./connection.php" method="$_POST">
+    <form action="" method="POST">
 
-
+        <p> <?= $errMail ?> </p>
         <label for="userEmail">Votre adresse mail</label>
-        <input type="email" name="mail" id="userEmail" value=" <?php if(isset($mail)){ echo $mail; } ?> ">
+        <input type="email" name="mail" id="userEmail" value="<?php if(isset($_POST['mail'])){ echo $_POST['mail']; }?> ">
 
         <br>
-
+        <p> <?= $errPassword ?> </p>
         <label for="mdp">Mot de passe</label>
         <input type="password" name="userPassword" id="mdp">
 
