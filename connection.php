@@ -1,7 +1,17 @@
 <?php
-
-
     session_start();
+    var_dump($_SESSION);
+
+    if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+
+        header("Location: ./connexionReussi.php");
+
+        var_dump($_SESSION);
+
+
+    }
+
+    
 
     /* if (isset()) {
         header("Location: ");
@@ -10,7 +20,7 @@
     require_once("../dbLog.php");
 
 
-    $mail = $password = "";
+    $mail = $hashedPassword = "";
     $errMail = $errPassword = $errLogin = "";
 
     if ($connexion) {
@@ -20,32 +30,30 @@
 
         if (isset($_POST["connection"])) {
 
-            /* var_dump($_POST);
+            
 
-            var_dump($_POST["connection"]); */
+          
 
-            $stmt=$connexion->prepare('SELECT * FROM users WHERE user_email = ?');
+            $stmt=$connexion->prepare('SELECT * FROM users WHERE user_name = :user_name');
 
-            /* var_dump($stmt); */
+            
             foreach ($_POST as $fields => $values){
         
-                
-                if ($fields === "user_mail") {
-                    $mail = trim($values);
+
+                if ($fields === "user_name"){
                     
-                    /* verification mail */ 
-                    if (empty($mail)) {
-                        $errMail = "Ce champ doit être rempli";
-                    } 
-                    elseif (!filter_var($mail, FILTER_VALIDATE_EMAIL))  {
-                        $errMail = "Votre adresse email n'est pas conforme.";
-                        
+                    $username = trim($values);
+        
+                    /* verification username */
+                    if (empty($username)) {
+                        $errUserName = "Ce champ doit être rempli";
                     }
-                    else{
-                        $stmt->bindParam('1', $mail, PDO::PARAM_STR);
+
+                    elseif (!preg_match('/^[a-zA-Z0-9_]/', $username)) {
+                            $errUserName = "Le nom d'utilisateur peut seulement contenir des lettres, des nombres et des underscores";
                     }
                     
-                    
+                     
                 }
                 
                 if ($fields === "user_password") {
@@ -72,53 +80,62 @@
                     }
                     /* Verify if there's any error so we can hash the password for the query */
                     if (empty($errPassword)) {
-                        $hashedPassword =hash('sha512', htmlspecialchars($password) );
+                        $hashedPassword = hash('sha512', htmlspecialchars($password) );
                         
                     }
+
                 }
-                /* var_dump($errMail);
-                var_dump($errPassword); */
                 
-            }
-
-            
-
-            
-            
-
-
-            if (empty($errMail) && empty($errPassword)) {
-                
-                $result=$stmt->execute();
-                var_dump($result);
-
-                $result=($stmt->fetchAll(PDO::FETCH_ASSOC));
-
-                
-
-                var_dump($result);
                
+                
             }
+            
+            
+            echo "<h1>$hashedPassword</h1>";
+            
 
-            var_dump($result);
+                
+                
+            if (empty($errMail) && empty($errPassword)) {
+                 $stmt->bindParam(':user_name', $username, PDO::PARAM_STR); 
+                
+                    
+                $result=$stmt->execute(); 
+
+                
+
+                
+
+                $result=($stmt->fetchAll());
+
+                
+                
+            }
+            
+
+            
+
+            
 
             if (($result)) {
-                if ($hashedPassword === $result['user_password']) {
+                if ($hashedPassword === $result[0]['user_password']) {
                     session_start();
     
-                    $_SESSION["id"] = $result["user_id"];
-                    $_SESSION["username"] = $result["user_name"];
-                    $_SESSION["email"] = $result["user_email"];
+                    $_SESSION["id"] = $result[0]["user_id"];
+                    $_SESSION["username"] = $result[0]["user_name"];
+                    $_SESSION["email"] = $result[0]["user_email"];
                     $_SESSION["loggedin"]= true;
+
+                    
     
-                    /* header("Location: ./connexionReussi"); */
-                    echo " conenxion réussi";
+                    header("Location: ./connexionReussi.php");
+                    $errLogin= " conenxion réussi";
                 }
                 else{
                     $errLogin = "L'identifiant ou le mot de passe n'est pas correct";
                 }
-                var_dump($result);
-                /* var_dump($_SESSION); */
+                
+                
 
                 
             }
@@ -156,17 +173,17 @@
 <body>
 
     <h1>Se connecter</h1>
-
+    
     <form action="" method="POST">
 
         <p> <?= $errMail ?> </p>
-        <label for="userEmail">Votre adresse mail</label>
-        <input type="email" name="mail" id="userEmail" value="<?php if(isset($_POST['mail'])){ echo $_POST['mail']; }?> ">
+        <label for="userEmail">Votre nom d'utilisateur</label>
+        <input type="email" name="user_name" id="userName" value="<?php if(isset($username)){ echo $username; }?> ">
 
         <br>
         <p> <?= $errPassword ?> </p>
-        <label for="mdp">Mot de passe</label>
-        <input type="password" name="userPassword" id="mdp">
+        <label for="mdp">Votre mot de passe</label>
+        <input type="password" name="user_password" id="mdp">
 
         <input type="submit" value="connection" name="connection">
 
