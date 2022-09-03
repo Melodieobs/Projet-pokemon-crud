@@ -1,14 +1,15 @@
-<!-- Réference au supression des pokémons. -->
+<!-- Réference au supression des users -->
 
 <?php
 
 require("./conn.php");
 
 if($connexion){
-    $pokmnId = $_POST['hiddenField'];
+    $userID = $_POST['hidden'];
 
-    $execResult = $connexion->query("DELETE FROM pokemon_games WHERE pkmn_id = $pokmnId");
+    $execResult = $connexion->query("DELETE FROM users WHERE user_id = $userID");
     var_dump($execResult);
+    header("Location: ./read.php");
 }
 
 
