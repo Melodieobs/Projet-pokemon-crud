@@ -26,7 +26,8 @@
             
             foreach($_POST as $fields => $value){
                 array_push($tabval, $value);
-                              
+                              // verifie si le champs et rempli et si il n'y a pas de caractere speciaux, ainsi que
+                              // ne depasse pas le nombre de verification
                 if($fields === "generation"){
                     $value = trim(ucfirst($value));
                     if(empty($value)){
@@ -42,6 +43,7 @@
                         $generation = $value;
                     }
                 }
+                  // verifie si le champs et rempli et si il n'y a pas de caractere speciaux
                 if($fields === "titre"){
                     if(empty($value)){
                         echo $err = "Le champs titre n'as pas était remplis.\n\n";
@@ -53,6 +55,7 @@
                         $titre = $value;
                     }
                 }
+                // verifie si le champs et rempli et si il n'y a pas de caractere speciaux
                 if($fields === "supportsortie"){
                     if(empty($value)){
                         echo $err = "Le champ date de sorti n'as pas était remplis.\n\n";
@@ -64,6 +67,8 @@
                         $supp = $value;
                     }
                 }
+                // verifie si c'est bien une date
+                // ainsi que ça ne dépasse pas la date
                 if($fields === "ddesortie"){
                     if($value > date("Y-m-d")){
                         echo $err = "La date saisie n'est pas bonne.\n\n" ;
@@ -72,6 +77,7 @@
                         $date = $value;
                     }
                 }
+                //verifie si cela est bien un url
                 if($fields === "url"){
                     if(filter_var($value, FILTER_VALIDATE_URL)){
                         $url = $value;
@@ -80,6 +86,7 @@
                         echo $err = "J'ai bien l'impression que cela n'est pas un url !";
                     }
             }
+            // si il n'y a pas d'erreur cela va s'inserer
             if(isset($date) && isset($supp) && isset($titre) && isset($generation) && isset($url)){
                 $execResult = $connexion->query("UPDATE pokemon_games SET pkmn_game_name = '$titre', pkmn_generation ='$generation' , pkmn_support = '$supp', pkmn_release_date ='$date', pkmn_image = '$url' WHERE pkmn_id = '$pkmnId'");
                 
