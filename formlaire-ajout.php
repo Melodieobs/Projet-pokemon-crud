@@ -60,13 +60,21 @@ if($connexion){
                 $date = $value;
             }
         }
+        if($fields === "url"){
+            if(filter_var($value, FILTER_VALIDATE_URL)){
+                $url = $value;
+            }
+            else{
+                echo $errUrl = "J'ai bien l'impression que cela n'est pas un url !";
+            }
+        }
     }
 }
 
 ?>
 
 
-    <form method="POST" action="./add.php">
+    <form method="POST" action="./add.php" Enctype="">
 <div>
     <label for="titre-poke-jeux">Titre de jeux pokémon: </label>
     <input type="text" name="titre" id="titre-de-jeux" <?php if(isset($execResult)){ echo ["titre-poke-jeux"];} ?>>
@@ -84,8 +92,10 @@ if($connexion){
 
 <div>
     <label for="support-de-sortie">Support de sortie : </label>
-    <input type="text" name="supportsortie" id="supp-sortie" <?php if(isset($execResult)){ echo $$execResult[0]["support-sortie"];} ?>>
+    <input type="text" name="supportsortie" id="supp-sortie" <?php if(isset($execResult)){ echo $execResult[0]["support-sortie"];} ?>>
 </div>
-
+<div>
+    <input type="URL" name="url" <?php if(isset($execResult)){echo $execResult[0]['url'];}?>>
+</div>
 <input type="submit" value="Ajouter">
 </form>

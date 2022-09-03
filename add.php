@@ -11,6 +11,7 @@ if($connexion){
     $pkmn_generation = $_POST["generation"];
     $pkmn_release_date = $_POST["ddesortie"];
     $pkmn_support = $_POST["supportsortie"];
+    $pkmn_image = $_POST["url"];
 
     $execResult = $connexion->query("CREATE DATABASE IF NOT EXISTS 'pokemon-crud'");
 
@@ -25,8 +26,8 @@ if($connexion){
         UNIQUE KEY 'pkmn_id' ('pkmn_id'))");
 
         
-if(isset($date) && isset($supp) && isset($titre) && isset($generation)){
-    $execResult = $connexion->query("INSERT INTO  pokemon_games (pkmn_game_name, pkmn_generation, pkmn_release_date, pkmn_support) VALUES ('$pkmn_game_name', $pkmn_generation, '$pkmn_release_date', '$pkmn_support')"); ?>
+if(isset($date) && isset($supp) && isset($titre) && isset($generation) && isset($url)){
+    $execResult = $connexion->query("INSERT INTO  pokemon_games (pkmn_game_name, pkmn_generation, pkmn_release_date, pkmn_support, pkmn_image) VALUES ('$pkmn_game_name', $pkmn_generation, '$pkmn_release_date', '$pkmn_support', '$pkmn_image')"); ?>
 
     <a href="./jeuxPok/read.php" title="Redirection sur la page de tous les utilisateurs">Afficher tous les jeux pokémon</a>
 <?php }
