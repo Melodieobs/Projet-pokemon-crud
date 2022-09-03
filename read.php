@@ -18,7 +18,7 @@
         foreach($assocResult as $single):
             ?>
             <li>
-            <?= $single["pkmn_id"]; ?> | <?= $single["pkmn_game_name"]; ?> | <?= $single["pkmn_generation"]; ?> | <?= $single["pkmn_release_date"]; ?> | <?= $single["pkmn_support"]; ?> | <?= $single["pkmn_image"]; ?> 
+            <?= $single["pkmn_id"]; ?> | <?= $single["pkmn_game_name"]; ?> | <?= $single["pkmn_generation"]; ?> | <?= $single["pkmn_release_date"]; ?> | <?= $single["pkmn_support"]; ?> | <img src="<?php echo $single["pkmn_image"] ?>" alt="img">
                 <a href="./update.php?pkmn_id=<?= $single["pkmn_id"] ?>">Modifier</a>
                 
                 <form method="POST" action="./delete.php">
