@@ -8,62 +8,59 @@ $tabval = [];
 
 //$remplaceGame_Name= str_ireplace( "é","e",$pkmn_game_name);
 
-if($connexion){   
-        foreach($_POST as $fields => $value){
-            array_push($tabval, $value);
 
-            var_dump($tabval);                
-            if($fields === "generation"){
-                $value = trim(ucfirst($value));
-                if(empty($value)){
-                    echo $errGen = "Le champs génération n'est pas remplis";
-                }
-                elseif(preg_match("$paterne2", $value)){
-                    echo $errGen = "erreur il n'y a que 8 génération";
-                }
-                else{
-                    $generation = $value;
-                }
+if($connexion){ 
+      
+    foreach($_POST as $fields => $value){
+        array_push($tabval, $value);
+
+        // var_dump($tabval);                
+        if($fields === "generation"){
+            $value = trim(ucfirst($value));
+            if(empty($value)){
+                echo $errGen = "Le champs génération n'est pas remplis\n\n";
             }
-            if($fields === "titre"){
-                if(empty($value)){
-                    echo $errTitre = "Le champs titre n'as pas était remplis";
-                }
-                elseif(!preg_match("$paterne", $value)){
-                    echo $errTitre = "La titre saisie n'est pas bonne.";
-                    var_dump(!preg_match("$paterne", $value));
-                }
-                else{
-                    $titre = $value;
-                }
+            elseif($value == 9){
+                echo $errGen = "Désolé pour toi cette génération sort le 18/novembre/2022 ! ";
             }
-            if($fields === "supportsortie"){
-                if(empty($value)){
-                    echo $errSuppSortie = "Le champ date de sorti n'as pas était remplis";
-                }
-                elseif(!preg_match("$paterne", $value)){
-                    echo $errSuppSortie = "La valeur du support n'est pas bonne.";
-                    var_dump(!preg_match("$paterne", $value));
-                }
-                else{
-                    $supp = $value;
-                }
+            elseif($value > 8){
+                echo $errGen = "erreur il n'y a que 8 génération\n\n";
             }
-            if($fields === "ddesortie"){
-                if($value > date("Y-m-d")){
-                    echo $errDate = "La date saisie n'est pas bonne" ;
-                }
-                else{
-                    $date = $value;
-                }
+            else{
+                $generation = $value;
             }
         }
-        if($date && $supp && $titre && $generation){
-            $execResult = $connexion->query("INSERT INTO pokemon_games (pkmn_game_name,pkmn_generation,pkmn_release_date,pkmn_support) VALUES ('$titre',$generation, '$date', '$supp')");          
+        if($fields === "titre"){
+            if(empty($value)){
+                echo $errTitre = "Le champs titre n'as pas était remplis.\n\n";
+            }
+            elseif(!preg_match("$paterne", $value)){
+                echo $errTitre = "La titre saisie n'est pas bonne.\n\n";
+            }
+            else{
+                $titre = $value;
+            }
+        }
+        if($fields === "supportsortie"){
+            if(empty($value)){
+                echo $errSuppSortie = "Le champ date de sorti n'as pas était remplis.\n\n";
+            }
+            elseif(!preg_match("$paterne", $value)){
+                echo $errSuppSortie = "La valeur du support n'est pas bonne.\n\n";
+            }
+            else{
+                $supp = $value;
+            }
+        }
+        if($fields === "ddesortie"){
+            if($value > date("Y-m-d")){
+                echo $errDate = "La date saisie n'est pas bonne.\n\n" ;
+            }
+            else{
+                $date = $value;
+            }
+        }
     }
-        else{
-            echo "Une erreurs est survenue, il y a des erreurs dans les champs";
-        }
 }
 
 ?>
@@ -72,7 +69,7 @@ if($connexion){
     <form method="POST" action="./add.php">
 <div>
     <label for="titre-poke-jeux">Titre de jeux pokémon: </label>
-    <input type="text" name="titre-poke-jeux" id="titre-de-jeux" <?php if(isset($execResult)){ echo ["titre-poke-jeux"];} ?>>
+    <input type="text" name="titre" id="titre-de-jeux" <?php if(isset($execResult)){ echo ["titre-poke-jeux"];} ?>>
 </div>
 
 <div>
@@ -82,16 +79,13 @@ if($connexion){
 
 <div>
     <label for="d-de-sortie">Date de sortie Européenne : </label>
-    <input type="date" name="d-de-sortie" id="date-de-sortie" <?php if(isset($execResult)){ echo $execResult[0]["d-de-sortie"];} ?>>
+    <input type="date" name="ddesortie" id="ddsortie" <?php if(isset($execResult)){ echo $execResult[0]["d-de-sortie"];} ?>>
 </div>
 
 <div>
     <label for="support-de-sortie">Support de sortie : </label>
-    <input type="text" name="support-sortie" id="supp-sortie" <?php if(isset($execResult)){ echo $$execResult[0]["support-sortie"];} ?>>
+    <input type="text" name="supportsortie" id="supp-sortie" <?php if(isset($execResult)){ echo $$execResult[0]["support-sortie"];} ?>>
 </div>
 
 <input type="submit" value="Ajouter">
 </form>
-
-
-<a href="./jeuxPok/read.php" title="Redirection sur la page de tous les utilisateurs">Afficher tous les jeux pokémon</a>

@@ -3,13 +3,14 @@
 //fichier qui permettra d'ajouter des jeux pokemon
 
 require("./jeuxPok/conn.php");
+require("./formlaire-ajout.php");
 
 if($connexion){
 
-    $pkmn_game_name= $_POST["titre-poke-jeux"];
+    $pkmn_game_name= $_POST["titre"];
     $pkmn_generation = $_POST["generation"];
-    $pkmn_release_date = $_POST["d-de-sortie"];
-    $pkmn_support = $_POST["support-sortie"];
+    $pkmn_release_date = $_POST["ddesortie"];
+    $pkmn_support = $_POST["supportsortie"];
 
     $execResult = $connexion->query("CREATE DATABASE IF NOT EXISTS 'pokemon-crud'");
 
@@ -24,7 +25,14 @@ if($connexion){
         UNIQUE KEY 'pkmn_id' ('pkmn_id'))");
 
         
+if(isset($date) && isset($supp) && isset($titre) && isset($generation)){
+    $execResult = $connexion->query("INSERT INTO  pokemon_games (pkmn_game_name, pkmn_generation, pkmn_release_date, pkmn_support) VALUES ('$pkmn_game_name', $pkmn_generation, '$pkmn_release_date', '$pkmn_support')"); ?>
 
+    <a href="./jeuxPok/read.php" title="Redirection sur la page de tous les utilisateurs">Afficher tous les jeux pokémon</a>
+<?php }
+else{
+    echo "Une erreurs est survenue, il y a des erreurs dans les champs !";
+}
     // $execResult = $connexion->query("INSERT INTO pokemon_games (pkmn_game_name,pkmn_generation,pkmn_release_date,pkmn_support) VALUE ('$pkmn_game_name',$pkmn_generation,$pkmn_release_date,'$pkmn_support')");
 
     // var_dump($pkmn_game_name);
@@ -32,4 +40,3 @@ if($connexion){
 //     
 }
 ?>
-<a href="./jeuxPok/read.php" title="Redirection sur la page de tous les utilisateurs">Afficher tous les jeux pokémon</a>
