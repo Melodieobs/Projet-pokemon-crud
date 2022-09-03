@@ -97,23 +97,35 @@
 
 ?>
 
-<form method="POST" action="./update.php">
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mise à jour des pokémon en cas d'erreur">
+    <title>Mise à jour pokemon</title>
+</head>
+<body>
+    
+    
+    <form method="POST" action="./update.php">
         <input type="hidden" name="pkmn_id" value="<?php if(isset($result)){ echo $_GET["pkmn_id"];} ?>">
         <div>
             <label for="titre-de-jeux">Titre de jeux pokémon : </label>
             <input type="text" name="titre" id="titre-de-jeux" value="<?php if(isset($result)){ echo $result[0]["pkmn_game_name"];} if(isset($err)){ echo $_POST['titre']; } ?>">
         </div>
-
+        
         <div>
             <label for="gener">Génération : </label>
             <input type="number" name="generation" id="gener" placeholder="<?php if(isset($result)){ echo $result[0]['pkmn_generation'] ;} if(isset($err)){ echo $_POST['generation']; }?> ">
         </div>
-
+        
         <div>
             <label for="supp-sortie">Support de sortie : </label>
             <input type="text" name="supportsortie" id="supp-sortie" value="<?php if(isset($result)){ echo $result[0]["pkmn_support"];} if(isset($err)){ echo $_POST['supportsortie']; }?>">
         </div>
-
+        
         <div>
             <label for="date-de-sortie">Date de sortie Européenne : </label>
             <input type="date" name="ddesortie" id="date-de-sortie" value="<?php if(isset($result)){ echo $result[0]["pkmn_release_date"]; } ?>">
@@ -126,3 +138,5 @@
     </form>
     <a href="./read.php" title="Redirection vers la liste">Retourner à la liste pokemon</a> 
     
+</body>
+</html>
