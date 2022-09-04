@@ -2,6 +2,7 @@
     session_start();
     var_dump($_SESSION);
 
+    /* Vérifie si une session n'existe pas déja */
     if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
 
         header("Location: ./connexionReussi.php");
@@ -11,34 +12,20 @@
 
     }
 
-    
-
-    /* if (isset()) {
-        header("Location: ");
-    } */
-
     require_once("../dbLog.php");
-
 
     $mail = $hashedPassword = "";
     $errMail = $errPassword = $errLogin = "";
 
     if ($connexion) {
         
-    
         var_dump($connexion);
 
         if (isset($_POST["connection"])) {
 
-            
-
-          
-
             $stmt=$connexion->prepare('SELECT * FROM users WHERE user_name = :user_name');
 
-            
             foreach ($_POST as $fields => $values){
-        
 
                 if ($fields === "user_name"){
                     
@@ -60,25 +47,27 @@
                     
                     $password = trim($values);
 
-                    /* Password verification */
+                    /* verification mdp */
                     if (empty($password)) {
                         $errPassword = "Ce champ doit être rempli.";
                     } 
                     else {
 
-                        /* Verify if password has more than 8 characters */
+                        /* vérifie si mdp a plus de 8 charactères */
                         if (strlen($password) <= 8) {
                             $errPassword = "Votre mot de passe doit au moins faire 8 charactère de long.";
                         }
 
-                        /* Verify if password has at least one uppercase letter, one number and one  */
+                        /* Verifie si mdp a au moins une majuscule, un chiffre et un charactère spécial */
                         if (!preg_match('/[A-Z]/', $password)  || !preg_match('/\d/', $password) || !preg_match("/[$&+,:;=?@#|'<>.-^*()%!]/", $password) ) {
                             $errPassword = "Votre mot de passe doit contenir au moins une majuscule et au moins un chiffre.";
                         }
 
                     
                     }
-                    /* Verify if there's any error so we can hash the password for the query */
+
+                    /* Verify s'il y a une erreur
+                    Sinon transforme les entités html et hash le mdp */
                     if (empty($errPassword)) {
                         $hashedPassword = hash('sha512', htmlspecialchars($password) );
                         
@@ -89,34 +78,17 @@
                
                 
             }
-            
-            
-            echo "<h1>$hashedPassword</h1>";
-            
 
-                
-                
+            /* Si aucune erreur execute la requete */
             if (empty($errMail) && empty($errPassword)) {
                  $stmt->bindParam(':user_name', $username, PDO::PARAM_STR); 
-                
-                    
+     
                 $result=$stmt->execute(); 
-
-                
-
-                
-
                 $result=($stmt->fetchAll());
 
-                
-                
             }
             
-
-            
-
-            
-
+            /* Crée la session */
             if (($result)) {
                 if ($hashedPassword === $result[0]['user_password']) {
                     session_start();
@@ -126,8 +98,6 @@
                     $_SESSION["email"] = $result[0]["user_email"];
                     $_SESSION["loggedin"]= true;
 
-                    
-    
                     header("Location: ./connexionReussi.php");
                     $errLogin= " conenxion réussi";
                 }
@@ -142,21 +112,8 @@
             else{
                 $errLogin= "Erreur de connexion";
             }
-
-            
-
-            /* $stmt->close(); */
-
         }
-
-
-
-        /* $connexion->close(); */
-
-    
     }
-
-
 ?>
 
 
@@ -178,7 +135,7 @@
 
         <p> <?= $errMail ?> </p>
         <label for="userEmail">Votre nom d'utilisateur</label>
-        <input type="email" name="user_name" id="userName" value="<?php if(isset($username)){ echo $username; }?> ">
+        <input type="text" name="user_name" id="userName" value="<?php if(isset($username)){ echo $username; }?> ">
 
         <br>
         <p> <?= $errPassword ?> </p>
