@@ -73,7 +73,7 @@
                 /* Vérification du mot de passe */
                 if ($fields === "user_password") {
                     
-                    /* suppression des espaces au début et a la fin de la saisie */
+                    
                     $password = trim($values);
 
                     /* Vérifie si le mdp est remplie */
@@ -100,17 +100,18 @@
                     }
                     /* vérifie qu'aucune erreur a été faite dans le mdp */
                     if (empty($errPassword)) {
+
+
                         /* Conversion des caractères speciaux en entités HTML */
                         /* hashage du mot de passe */
                         $hashedPassword =hash('sha512', htmlspecialchars($password) );
-                        
                     }
                 }
     
                 /* Vérification de la confirmation mdp */
                 if ($fields === "user_confirmedPassword") {
                 
-                    /* suppression des espaces au début et a la fin de la saisie */
+                   
                     $confirmedPassword = trim($values);
 
                     /* Verifie si le champ a été rempli */
@@ -171,13 +172,7 @@
    
                } 
             }
-
-           
-           
-        
-        
         }  
-        
     }
     else{
         $errConnexion = "Il y a eu une erreur avec la connexion";
@@ -206,6 +201,7 @@
 
         <div>
     
+            <!-- input pour le nom d'utilisateur -->
             <label for="name">Entrez votre nom&nbsp;:</label>
             <input type="text" name="user_name" value="<?php if (isset($username)) { echo $username; } ?>" id="name">
             <p><?= $errUserName ?></p> 
@@ -214,6 +210,8 @@
 
 
         <div>
+
+            <!-- input pour le mail -->
             <label for="email">Entrez votre adresse mail&nbsp;:</label>
             <input type="email" name="user_mail" value="<?php if (isset($mail)) { echo $mail; } ?>"  id="email">
             <p><?php echo $errMail ?></p>
@@ -221,6 +219,8 @@
         
 
         <div>
+
+        <!-- input pour le mot de passe -->
             <label for="password">Entrez votre mot de passe&nbsp;:</label>
             <input type="password" name="user_password" id="password">
             <p><?php echo $errPassword ?></p> 
@@ -228,6 +228,7 @@
 
 
         <div>
+            <!-- input pour la confirmation de mot de passe -->
             <label for="cconfirmedPassword">Vérifiez votre mot de passe&nbsp;:</label>
             <input type="password" name="user_confirmedPassword" id="confirmedPassword">
             <p> <?php echo $errConfirmedPassword ?> </p> 
@@ -235,7 +236,7 @@
 
 
 
-        
+        <!-- bouton d'envoi -->
         <input type="submit" name="inscription" value="S'inscrire">
 
 
