@@ -3,7 +3,7 @@
 <?php 
 
     /* Permet de faire référence ou garder les mêmes variable (pour évité de recrée) */
-    require("./conn.php");
+    require("../conn.php");
 
 
     if($connexion){

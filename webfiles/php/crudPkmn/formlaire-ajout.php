@@ -1,6 +1,6 @@
 <?php
 
-require("./jeuxPok/conn.php");
+require("../conn.php");
 
 $paterne = '/^[A-Za-z1-2\s&]+$/';
 $paterne2 = '/^[0-9]+$/';

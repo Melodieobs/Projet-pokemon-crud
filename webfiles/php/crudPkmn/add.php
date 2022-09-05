@@ -2,7 +2,7 @@
 <?php
 //fichier qui permettra d'ajouter des jeux pokemon
 
-require("./jeuxPok/conn.php");
+require("../conn.php");
 require("./formlaire-ajout.php");
 
 if($connexion){
@@ -29,7 +29,7 @@ if($connexion){
 if(isset($date) && isset($supp) && isset($titre) && isset($generation) && isset($url)){
     $execResult = $connexion->query("INSERT INTO  pokemon_games (pkmn_game_name, pkmn_generation, pkmn_release_date, pkmn_support, pkmn_image) VALUES ('$pkmn_game_name', $pkmn_generation, '$pkmn_release_date', '$pkmn_support', '$pkmn_image')"); ?>
 
-    <a href="./jeuxPok/read.php" title="Redirection sur la page de tous les utilisateurs">Afficher tous les jeux pokémon</a>
+    <a href="../../../read.php" title="Redirection sur la page de tous les utilisateurs">Afficher tous les jeux pokémon</a>
 <?php }
 else{
     echo "Une erreurs est survenue, il y a des erreurs dans les champs !";

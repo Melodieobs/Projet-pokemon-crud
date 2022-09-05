@@ -89,7 +89,7 @@
                     $_SESSION["id"] = $result[0]["user_id"];
                     $_SESSION["username"] = $result[0]["user_name"];
                     $_SESSION["email"] = $result[0]["user_email"];
-                    $_SESSION["loggedin"]= true;
+                    $_SESSION["loggedin"] = true;
 
                     header("Location: ../../../../read.php");
                 }

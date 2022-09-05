@@ -1,7 +1,8 @@
 <!-- Référence au modification pokémon. -->
  
 <?php 
-
+    session_start();
+     if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     require("../conn.php");
 
     $paterne = '/^[A-Za-z1-2\s&]+$/';
@@ -88,7 +89,7 @@
             }
             // si il n'y a pas d'erreur cela va s'inserer
             if(isset($date) && isset($supp) && isset($titre) && isset($generation) && isset($url)){
-                $execResult = $connexion->query("UPDATE pokemon_games SET pkmn_game_name = '$titre', pkmn_generation ='$generation' , pkmn_support = '$supp', pkmn_release_date ='$date', pkmn_image = '$url' WHERE pkmn_id = '$pkmnId'");
+                $execResult = $connexion->query("UPDATE pokemon_games SET pkmn_game_name = '$titre', pkmn_generation ='$generation' , pkmn_support = '$supp', pkmn_release_date ='$date', pkmn_img = '$url' WHERE pkmn_id = '$pkmnId'");
                 
             }
         }
@@ -107,10 +108,8 @@
     <title>Mise à jour pokemon</title>
 </head>
 <body>
-    
 
-    <?php if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) { ?>
-        
+      
     
 
         <form method="POST" action="./update.php">
@@ -135,22 +134,22 @@
                 <input type="date" name="ddesortie" id="date-de-sortie" value="<?php if(isset($result)){ echo $result[0]["pkmn_release_date"]; } ?>">
             </div>
             <div>
-                <input type="URL" name="url" value="<?php if(isset($result)){ echo $result[0]["pkmn_image"];} if(isset($err)){ echo $_POST['url']; }?>">
-                <img src="<?php if(isset($result)){ echo $result[0]["pkmn_image"]; } ?>" alt="img" >
+                <input type="URL" name="url" value="<?php if(isset($result)){ echo $result[0]["pkmn_img"];} if(isset($err)){ echo $_POST['url']; }?>">
+                <img src="<?php if(isset($result)){ echo $result[0]["pkmn_img"]; } ?>" alt="img" >
             </div>
             <input type="submit" value="Modifier">
         </form>
-        <a href="./read.php" title="Redirection vers la liste">Retourner à la liste pokemon</a> 
+        <a href="../../../read.php" title="Redirection vers la liste">Retourner à la liste pokemon</a> 
 
         <?php
-    } else {
+    } 
+    else{
      ?>
-    
         <h1>Vous n'etes pas connecter</h1>
-
+        
         <a href="../auth/authLogin/connection.php" title="connexion">Connectez vous</a>
-
-    <?php
+        
+        <?php
     } ?>
     
 

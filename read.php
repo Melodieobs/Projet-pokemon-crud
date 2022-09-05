@@ -11,6 +11,8 @@
 <body>
     <header>
         <a href="./webfiles/php/auth/authLogin/connection.php" title="connexion">Se connecter</a>
+        <a href="./webfiles/php/crudUser/read.php">liste des utilisateur</a>
+        <a href="./webfiles/php/auth/authLogin/deconnexion.php">déconnexion</a>
     </header>  
     <ul>
         <?php 
@@ -31,7 +33,7 @@
         foreach($assocResult as $single):
             ?>
             <li>
-            <?= $single["pkmn_id"]; ?> | <?= $single["pkmn_game_name"]; ?> | <?= $single["pkmn_generation"]; ?> | <?= $single["pkmn_release_date"]; ?> | <?= $single["pkmn_support"]; ?> | <img src="<?php echo $single["pkmn_image"] ?>" alt="img">
+            <?= $single["pkmn_id"]; ?> | <?= $single["pkmn_game_name"]; ?> | <?= $single["pkmn_generation"]; ?> | <?= $single["pkmn_release_date"]; ?> | <?= $single["pkmn_support"]; ?> | <img src="<?php echo $single["pkmn_img"] ?>" alt="img">
             <a href="./webfiles/php/crudPkmn/update.php?pkmn_id=<?= $single["pkmn_id"] ?>">Modifier</a>
             
             <form method="POST" action="./webfiles/php/crudPkmn/delete.php">

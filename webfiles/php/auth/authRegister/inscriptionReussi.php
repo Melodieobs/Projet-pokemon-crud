@@ -11,7 +11,7 @@
         
         <h1>Bravo !Votre inscription est réussi!</h1>
 
-        <p>Se connecter a la page de <a href="./connection.php">Log in</a></p>
+        <p>Se connecter a la page de <a href="../authLogin/connection.php">Log in</a></p>
         
     </main>
 </body>

@@ -2,7 +2,7 @@
  
 <?php 
 
-    require("./conn.php");
+    require("../conn.php");
 
     if($connexion){
         if($_GET && $_GET['user_id']){

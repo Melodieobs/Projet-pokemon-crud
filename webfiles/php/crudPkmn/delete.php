@@ -5,14 +5,12 @@
 require("../conn.php");
 
 if($connexion){
-    $userID = $_POST['hidden'];
+    $pkmnID = $_POST['hiddenField'];
 
-    $execResult = $connexion->query("DELETE FROM users WHERE user_id = $userID");
+    $execResult = $connexion->query("DELETE FROM pokemon_games WHERE pkmn_id = $pkmnID");
     var_dump($execResult);
     header("Location: ../../../../read.php");
 }
 
 
 ?>
-
-<a href="./read.php" title="Redirection vers la liste" >Redirection vers la liste !</a>
