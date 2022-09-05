@@ -10,9 +10,13 @@
 </head>
 <body>
     <header>
-        <a href="./webfiles/php/auth/authLogin/connection.php" title="connexion">Se connecter</a>
-        <a href="./webfiles/php/crudUser/read.php">liste des utilisateur</a>
+        <?php  session_start();
+         if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) { ?>
         <a href="./webfiles/php/auth/authLogin/deconnexion.php">déconnexion</a>
+        <?php } else { ?>
+            <a href="./webfiles/php/auth/authLogin/connection.php" title="connexion">Se connecter</a>
+        <?php } ?>
+        <a href="./webfiles/php/crudUser/read.php">liste des utilisateur</a>
     </header>  
     <ul>
         <?php 
