@@ -32,6 +32,6 @@
         endforeach;
         
     }
-    
     ?>
     </ul>
+    <a href="../../../read.php">Page principal</a>
