@@ -9,7 +9,9 @@ $tabval = [];
 //$remplaceGame_Name= str_ireplace( "é","e",$pkmn_game_name);
 
 
-if($connexion){ 
+session_start();
+if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) { 
+if($connexion){
       
     foreach($_POST as $fields => $value){
         array_push($tabval, $value);
@@ -70,9 +72,7 @@ if($connexion){
         }
     }
 }
-
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -84,7 +84,7 @@ if($connexion){
 </head>
 <body>
     
-    <form method="POST" action="./add.php" Enctype="">
+    <form method="POST" action="./add.php" >
 <div>
     <label for="titre-poke-jeux">Titre de jeux pokémon: </label>
     <input type="text" name="titre" id="titre-de-jeux" <?php if(isset($execResult)){ echo ["titre-poke-jeux"];} ?>>
@@ -97,12 +97,12 @@ if($connexion){
 
 <div>
     <label for="d-de-sortie">Date de sortie Européenne : </label>
-    <input type="date" name="ddesortie" id="ddsortie" <?php if(isset($execResult)){ echo $execResult[0]["d-de-sortie"];} ?>>
+    <input type="date" name="ddesortie" id="ddsortie" <?php if(isset($execResult)){ echo $execResult[0]["ddesortie"];} ?>>
 </div>
 
 <div>
     <label for="support-de-sortie">Support de sortie : </label>
-    <input type="text" name="supportsortie" id="supp-sortie" <?php if(isset($execResult)){ echo $execResult[0]["support-sortie"];} ?>>
+    <input type="text" name="supportsortie" id="supp-sortie" <?php if(isset($execResult)){ echo $execResult[0]["supportsortie"];} ?>>
 </div>
 <div>
     <input type="URL" name="url" <?php if(isset($execResult)){echo $execResult[0]['url'];}?>>
@@ -112,3 +112,9 @@ if($connexion){
 </body>
 </html>
 </form>
+<?php }
+else { ?>
+    <p>Malin le linx ! mais tu n'as pas les droits tu n'est pas connecter !!</p>
+    <p>aller retourne à la page d'accueil !! <a href="../../../read.php">Page principal</a></p>
+<?php
+    }

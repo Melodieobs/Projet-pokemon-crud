@@ -13,6 +13,7 @@
         <?php  session_start();
          if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) { ?>
         <a href="./webfiles/php/auth/authLogin/deconnexion.php">déconnexion</a>
+        <a href="./webfiles/php/crudPkmn/formlaire-ajout.php">Page d'ajout Pokémon</a>
         <?php } else { ?>
             <a href="./webfiles/php/auth/authLogin/connection.php" title="connexion">Se connecter</a>
         <?php } ?>
