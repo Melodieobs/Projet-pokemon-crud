@@ -23,8 +23,8 @@
         <?php 
 
 /* Permet de faire référence ou garder les mêmes variable (pour évité de recrée) */
-    require("./webfiles/php/conn.php");
-
+require("./webfiles/database/database.php");
+require("./webfiles/php/conn.php");
     
     if($connexion){
         
